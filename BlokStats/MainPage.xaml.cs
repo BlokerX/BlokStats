@@ -1,222 +1,86 @@
 ﻿namespace BlokStats
 {
-    public partial class MainPage : ContentPage
+   public partial class MainPage : ContentPage
     {
-
-
-        float[] stats1 = new float[] { 0.8f, 0.6f, 0.9f, 0.4f, 0.7f, 0.5f }; // Postać 1
-        float[] stats2 = new float[] { 0.6f, 0.7f, 0.8f, 0.5f, 0.6f, 0.9f }; // Postać 2
-        float[] stats3 = new float[] { 0.9f, 0.4f, 0.7f, 0.8f, 0.5f, 0.6f }; // Postać 3
-
-        List<float[]> statsList;
-        List<Color> colors = [Colors.Blue, Colors.Red, Colors.Yellow];
-
-        string[] labels; // Nazwy umiejętności
-
-
+        private SkillHexagonDrawable _hexagonDrawable;
+        private float[] _stats = [0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f];
+        private Color _hexagonColor = Colors.Blue;  // Domyślny kolor wykresu
 
         public MainPage()
         {
             InitializeComponent();
-
-            statsList = [stats1, stats2, stats3];
-
-            labels = ["Parametr 1", "Parametr 2", "Parametr 3", "Parametr 4", "Parametr 5", "Parametr 6"];
-
-            HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-
+            _hexagonDrawable = new SkillHexagonDrawable(
+                new string[] { "P1", "P2", "P3", "P4", "P5", "P6" },
+                new List<float[]> { _stats },
+                new List<Color> { _hexagonColor }
+            );
+            HexagonView.Drawable = _hexagonDrawable;
         }
 
-        private void Button_OnClicked(object? sender, EventArgs e)
+        private void OnSliderChanged(object sender, ValueChangedEventArgs e)
         {
-            for (int i = 0; i < statsList.Count; i++)
-            {
-                for (int j = 0; j < statsList[i].Length; j++)
-                {
-                    statsList[i][j] += 0.01f;
-                }
-            }
-            HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
+            if (sender == Slider1) _stats[0] = (float)e.NewValue;
+            else if (sender == Slider2) _stats[1] = (float)e.NewValue;
+            else if (sender == Slider3) _stats[2] = (float)e.NewValue;
+            else if (sender == Slider4) _stats[3] = (float)e.NewValue;
+            else if (sender == Slider5) _stats[4] = (float)e.NewValue;
+            else if (sender == Slider6) _stats[5] = (float)e.NewValue;
+
+            HexagonView.Invalidate();
         }
 
-        private void Button2_OnClicked(object? sender, EventArgs e)
+        private void OnResetClicked(object sender, EventArgs e)
         {
-            for (int i = 0; i < statsList.Count; i++)
-            {
-                for (int j = 0; j < statsList[i].Length; j++)
-                {
-                    statsList[i][j] -= 0.01f;
-                }
-            }
-            HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
+            for (int i = 0; i < 6; i++)
+                _stats[i] = 0.5f;
+
+            Slider1.Value = Slider2.Value = Slider3.Value =
+                Slider4.Value = Slider5.Value = Slider6.Value = 0.5;
+
+            HexagonView.Invalidate();
         }
 
-        #region Entries
-
-        private void Entry11_TextChanged(object? sender, TextChangedEventArgs e)
+        // Funkcja obsługująca zmianę koloru wykresu
+        private async void OnChangeColorClicked(object sender, EventArgs e)
         {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
+            // Utwórz listę kolorów z nazwami
+            var colorOptions = new (string name, Color color)[]
             {
-                statsList[0][0] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
+                ("Niebieski", Colors.Blue),
+                ("Czerwony", Colors.Red),
+                ("Żółty", Colors.Yellow),
+                ("Zielony", Colors.Green),
+                ("Pomarańczowy", Colors.Orange),
+                ("Indygo", Colors.Indigo),
+                ("Fioletowy", Colors.Purple),
+                ("Biały", Colors.White),
+                ("Czarny", Colors.Black)
+            };
+
+            // Wyświetl panel wyboru z kolorami
+            string selectedColorName = await DisplayActionSheet("Wybierz kolor", "Anuluj", null,
+                colorOptions.Select(option => option.name).ToArray());
+
+            // Jeśli użytkownik anulował, zakończ
+            if (selectedColorName == "Anuluj")
+                return;
+
+            // Znajdź wybrany kolor na podstawie nazwy
+            var selectedColor = colorOptions.FirstOrDefault(option => option.name == selectedColorName).color;
+
+            // Ustaw kolor wykresu na wybrany
+            _hexagonColor = selectedColor;
+
+            // Zaktualizuj wykres z nowym kolorem
+            _hexagonDrawable = new SkillHexagonDrawable(
+                new string[] { "P1", "P2", "P3", "P4", "P5", "P6" },
+                new List<float[]> { _stats },
+                new List<Color> { _hexagonColor }
+            );
+            HexagonView.Drawable = _hexagonDrawable;
+            HexagonView.Invalidate();
         }
 
-        private void Entry12_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[0][1] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry13_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[0][2] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry14_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[0][3] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry15_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[0][4] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry16_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[0][5] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry21_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][0] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry22_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][1] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry23_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][2] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry24_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][3] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry25_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][4] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry26_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[1][5] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry31_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][0] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry32_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][1] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry33_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][2] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry34_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][3] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry35_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][4] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-        private void Entry36_TextChanged(object? sender, TextChangedEventArgs e)
-        {
-            if (float.TryParse((sender as Entry)?.Text, out float value))
-            {
-                statsList[2][5] = value / 100f;
-                HexagonView.Drawable = new SkillHexagonDrawable(labels, statsList, colors, true);
-            }
-        }
-
-
-        #endregion
     }
 
 }

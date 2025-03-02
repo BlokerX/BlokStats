@@ -5,52 +5,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+            <!-- Widok dla heksagonu -->
             <GraphicsView
                 x:Name="HexagonView"
-                Margin="10,100"
+                Margin="10,0"
                 HeightRequest="300"
                 WidthRequest="450" />
 
+            <!-- Przycisk Resetuj -->
             <Button
-                Clicked="Button_OnClicked"
-                Text="Increment" />
-            <Button
-                Clicked="Button2_OnClicked"
-                Text="Decrement" />
+                Clicked="OnResetClicked"
+                Text="Resetuj" />
 
-            <HorizontalStackLayout>
-                <Entry x:Name="Entry11" TextChanged="Entry11_TextChanged" />
-                <Entry x:Name="Entry12" TextChanged="Entry12_TextChanged" />
-                <Entry x:Name="Entry13" TextChanged="Entry13_TextChanged" />
-                <Entry x:Name="Entry14" TextChanged="Entry14_TextChanged" />
-                <Entry x:Name="Entry15" TextChanged="Entry15_TextChanged" />
-                <Entry x:Name="Entry16" TextChanged="Entry16_TextChanged" />
-            </HorizontalStackLayout>
+            <!-- Sekcja dla parametrów -->
+            <VerticalStackLayout>
+                <Label Text="Parametr 1" />
+                <Slider x:Name="Slider1" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Label Text="Parametr 2" />
+                <Slider x:Name="Slider2" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Label Text="Parametr 3" />
+                <Slider x:Name="Slider3" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Label Text="Parametr 4" />
+                <Slider x:Name="Slider4" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Label Text="Parametr 5" />
+                <Slider x:Name="Slider5" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Label Text="Parametr 6" />
+                <Slider x:Name="Slider6" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
 
-            <HorizontalStackLayout>
-                <Entry x:Name="Entry21" TextChanged="Entry21_TextChanged" />
-                <Entry x:Name="Entry22" TextChanged="Entry22_TextChanged" />
-                <Entry x:Name="Entry23" TextChanged="Entry23_TextChanged" />
-                <Entry x:Name="Entry24" TextChanged="Entry24_TextChanged" />
-                <Entry x:Name="Entry25" TextChanged="Entry25_TextChanged" />
-                <Entry x:Name="Entry26" TextChanged="Entry26_TextChanged" />
-            </HorizontalStackLayout>
-
-            <HorizontalStackLayout>
-                <Entry x:Name="Entry31" TextChanged="Entry31_TextChanged" />
-                <Entry x:Name="Entry32" TextChanged="Entry32_TextChanged" />
-                <Entry x:Name="Entry33" TextChanged="Entry33_TextChanged" />
-                <Entry x:Name="Entry34" TextChanged="Entry34_TextChanged" />
-                <Entry x:Name="Entry35" TextChanged="Entry35_TextChanged" />
-                <Entry x:Name="Entry36" TextChanged="Entry36_TextChanged" />
-            </HorizontalStackLayout>
-
-
+                <!-- Dodanie przycisku do zmiany koloru wykresu -->
+                <Button
+                    Text="Zmień kolor wykresu"
+                    Clicked="OnChangeColorClicked" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
+
 
 </ContentPage>
