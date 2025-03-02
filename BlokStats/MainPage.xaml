@@ -5,38 +5,75 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
-            <!-- Widok dla heksagonu -->
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <!--  Widok dla heksagonu  -->
             <GraphicsView
                 x:Name="HexagonView"
                 Margin="10,0"
                 HeightRequest="300"
                 WidthRequest="450" />
 
-            <!-- Przycisk Resetuj -->
+            <!--  Przycisk przełączający wykresy  -->
+            <Button
+                x:Name="ChartSwitchButton"
+                Clicked="OnChartSwitchClicked"
+                Text="Przełącz wykres" />
+
+            <!--  Przycisk Resetuj  -->
             <Button
                 Clicked="OnResetClicked"
                 Text="Resetuj" />
 
-            <!-- Sekcja dla parametrów -->
+            <!--  Przycisk Resetuj (zerowanie wykresu)  -->
+            <Button
+                Clicked="OnZeroGraphClicked"
+                Text="Zeruj wykres" />
+
+            <!--  Sekcja dla parametrów  -->
             <VerticalStackLayout>
                 <Label Text="Parametr 1" />
-                <Slider x:Name="Slider1" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider1"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
                 <Label Text="Parametr 2" />
-                <Slider x:Name="Slider2" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider2"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
                 <Label Text="Parametr 3" />
-                <Slider x:Name="Slider3" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider3"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
                 <Label Text="Parametr 4" />
-                <Slider x:Name="Slider4" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider4"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
                 <Label Text="Parametr 5" />
-                <Slider x:Name="Slider5" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider5"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
                 <Label Text="Parametr 6" />
-                <Slider x:Name="Slider6" Maximum="1" Minimum="0" ValueChanged="OnSliderChanged" />
+                <Slider
+                    x:Name="Slider6"
+                    Maximum="1"
+                    Minimum="0"
+                    ValueChanged="OnSliderChanged" />
 
-                <!-- Dodanie przycisku do zmiany koloru wykresu -->
+                <!--  Dodanie przycisku do zmiany koloru wykresu  -->
                 <Button
-                    Text="Zmień kolor wykresu"
-                    Clicked="OnChangeColorClicked" />
+                    Clicked="OnChangeColorClicked"
+                    Text="Zmień kolor wykresu" />
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
